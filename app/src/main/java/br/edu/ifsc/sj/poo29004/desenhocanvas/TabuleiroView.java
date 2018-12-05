@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+
 
 /**
  * Essa classe estende uma View para permitir desenhar objetos diretamente da mesma forma
@@ -30,6 +32,8 @@ public class TabuleiroView extends View {
     private final static String TAG = "Tabuleiro";
     private boolean mClicouNoX;
     private Botao mBotao;
+
+    private ArrayList<Integer[]> posições;
 
 
     public TabuleiroView(Context context, AttributeSet attrs) {
@@ -59,22 +63,37 @@ public class TabuleiroView extends View {
 
         mBotao = new Botao(context, 0, alturaDispositivo-500);
 
+        //gerar posições válidas
+//        posições = new ArrayList<>();
+//        for (int i = 0; i < 9; i++) {
+//            Integer[] aux = new Integer[2];
+//            aux[0] = 100+(i*500);
+//            aux[1] = 200+(i*500);
+//            posições.add(aux);
+//        }
+
     }
 
 
-
-    /**
-     * Exemplo estático de como desenhar diretamente no canvas
-     *
-     * @param canvas
-     */
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawCircle(100,100,50, mJogadorO);
-        canvas.drawLine(200, 200, 300, 300 , mJogadorX);
-        canvas.drawLine(200, 300, 300, 200 , mJogadorX);
+        //linhas
+        canvas.drawLine(0, this.getHeight()/4, this.getWidth(), getHeight()/4, new Paint());
+        canvas.drawLine(0, 2*this.getHeight()/4, this.getWidth(), 2*getHeight()/4, new Paint());
+        canvas.drawLine(0, 3*this.getHeight()/4, this.getWidth(), 3*getHeight()/4, new Paint());
+
+        //colunas
+        canvas.drawLine(this.getWidth()/3, this.getHeight()/4, this.getWidth()/3, this.getHeight(), new Paint());
+        canvas.drawLine(2*this.getWidth()/3, this.getHeight()/4, 2*this.getWidth()/3, this.getHeight(), new Paint());
+
+
+        //Exemplo de desenho na tela
+//        canvas.drawCircle(100,100,50, mJogadorO);
+//        canvas.drawLine(200, 200, 300, 300 , mJogadorX);
+//        canvas.drawLine(200, 300, 300, 200 , mJogadorX);
+
 
         if (mClicouNoX){
             canvas.drawText("Clicou no X", 400, 400, mTextoGenerico);
@@ -88,13 +107,6 @@ public class TabuleiroView extends View {
 
 
 
-
-
-    /**
-     * Para tratar quando o usuário tocar na tela
-     * @param event
-     * @return
-     */
     @Override
     public boolean onTouchEvent(MotionEvent event){
 
@@ -103,8 +115,6 @@ public class TabuleiroView extends View {
 
         return super.onTouchEvent(event);
     }
-
-
 
     private void logicaDoJogo(MotionEvent event){
 
@@ -137,5 +147,7 @@ public class TabuleiroView extends View {
             alert.show();
         }
     }
+
+
 
 }

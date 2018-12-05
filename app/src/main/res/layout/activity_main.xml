@@ -6,8 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <br.edu.ifsc.sj.poo29004.desenhocanvas.TabuleiroView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+    <Button
+        android:id="@+id/buttonJogar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:onClick="jogar"
+        android:text="JOGAR"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="77dp" />
 </android.support.constraint.ConstraintLayout>
