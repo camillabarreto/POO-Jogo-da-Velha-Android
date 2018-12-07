@@ -1,19 +1,17 @@
 package br.edu.ifsc.sj.poo29004.desenhocanvas;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ButtonBarLayout;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class TabuleiroActivity extends AppCompatActivity {
 
     private JogoDaVelha jogoDaVelha;
     private Button[][] matrizButtons;
     private String[] simbolo;
+    private TextView[] placar;
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -37,6 +35,10 @@ public class TabuleiroActivity extends AppCompatActivity {
         matrizButtons[2][1] = findViewById(R.id.button21);
         matrizButtons[2][2] = findViewById(R.id.button22);
 
+        placar = new TextView[2];
+        placar[0] = findViewById(R.id.placarEu);
+        placar[1] = findViewById(R.id.placarPc);
+
         this.jogoDaVelha = new JogoDaVelha();
     }
 
@@ -44,21 +46,21 @@ public class TabuleiroActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         //implementar diálogo aqui
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.msgSaida)
-                .setCancelable(false)
-                .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finishAndRemoveTask();
-                    }
-                })
-                .setNegativeButton(R.string.nao, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage(R.string.msgSaida)
+//                .setCancelable(false)
+//                .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        finishAndRemoveTask();
+//                    }
+//                })
+//                .setNegativeButton(R.string.nao, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
+//        AlertDialog alert = builder.create();
+//        alert.show();
     }
 
     public void click(View view) {
@@ -67,51 +69,56 @@ public class TabuleiroActivity extends AppCompatActivity {
         //Se jogada não for válida
         if(!jogoDaVelha.jogar(posiçãoMatriz(view))) return;
 
-        //Se jogada válida, desenhas simbolo do jogadorDaVez
+        //Se jogada válida, desenhar simbolo do jogadorDaVez
         b.setText(getSimbolo());
 
-        if(jogoDaVelha.ganhou()){
-
-            System.out.println("GANHOU - jogador " + getSimbolo());
-            this.esvaziaTabuleiro();
-
-        }else if(jogoDaVelha.tabuleiroCheio()) {
-
-            System.out.println("DEU VELHA");
-            this.esvaziaTabuleiro();
-
-        }else{
-
+        if(!fimJogo()){
                 System.out.println("JOGADA INTELIGENTE");
                 String pos = this.jogoDaVelha.jogadaInteligente();
                 int i = Integer.parseInt(pos.substring(0,1));
                 int j = Integer.parseInt(pos.substring(1));
                 matrizButtons[i][j].setText(getSimbolo());
-
-                if(jogoDaVelha.ganhou()){
-
-                    System.out.println("GANHOU - jogador " + getSimbolo());
-                    esvaziaTabuleiro();
-
-                }else if(jogoDaVelha.tabuleiroCheio()) {
-
-                    System.out.println("DEU VELHA");
-                    esvaziaTabuleiro();
-
-                }
+                fimJogo();
         }
 
     }
 
+    private boolean fimJogo(){
+        if(jogoDaVelha.ganhou()){
+            int i;
+            if(jogoDaVelha.getJogadorDaVez() < 0){
+                String a = placar[0].getText().toString();
+                i = Integer.parseInt(a) + 1;
+                placar[0].setText(""+i);
+            }else{
+                String a = placar[1].getText().toString();
+                i = Integer.parseInt(a) + 1;
+                placar[1].setText(""+i);
+            }
+            System.out.println("GANHOU - jogador " + getSimbolo());
+
+        }else if(jogoDaVelha.tabuleiroCheio()) {
+
+            System.out.println("DEU VELHA");
+
+        }else return false;
+
+        esvaziaTabuleiro();
+        return true;
+    }
+
     private String posiçãoMatriz(View view){
+        String pos = "";
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if(view.getId() == matrizButtons[i][j].getId()){
-                    return i + "" + j;
+                    pos = i + "" + j;
+                    break;
                 }
             }
+            if(pos.length() > 0) break;
         }
-        return "";
+        return pos;
     }
 
     private void esvaziaTabuleiro(){

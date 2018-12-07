@@ -1,8 +1,6 @@
 package br.edu.ifsc.sj.poo29004.desenhocanvas;
 
 public class JogoDaVelha {
-    //JLabel vai ser Integer
-    //tirar os getText()
 
     //Posições da matriz
     // 0 - ninguém jogou
@@ -10,10 +8,12 @@ public class JogoDaVelha {
     // -1 - pessoa jogou
 
     private Integer[][] matrizTabuleiro;
-    private Integer jogadorDaVez;
+    private int jogadorDaVez;
+    private int jogadorDaPartida;
 
     public JogoDaVelha() {
         this.jogadorDaVez = -1;
+        this.jogadorDaPartida = -1;
         this.matrizTabuleiro = new Integer[3][3];
         this.esvaziaTabuleiro();
     }
