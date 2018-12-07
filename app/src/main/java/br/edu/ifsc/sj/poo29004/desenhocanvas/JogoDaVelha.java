@@ -4,16 +4,16 @@ public class JogoDaVelha {
 
     //Posições da matriz
     // 0 - ninguém jogou
-    // 1 - PC jogou
-    // -1 - pessoa jogou
+    // -1 - PC jogou
+    // 1 - pessoa jogou
 
     private Integer[][] matrizTabuleiro;
     private int jogadorDaVez;
     private int jogadorDaPartida;
 
     public JogoDaVelha() {
-        this.jogadorDaVez = -1;
-        this.jogadorDaPartida = -1;
+        this.jogadorDaVez = 0;
+        this.jogadorDaPartida = 1;
         this.matrizTabuleiro = new Integer[3][3];
         this.esvaziaTabuleiro();
     }
@@ -22,10 +22,12 @@ public class JogoDaVelha {
         return jogadorDaVez;
     }
 
+    public int getJogadorDaPartida() { return jogadorDaPartida; }
+
     //String posiçãoMatriz no formato formato: ij (i: linha , j: coluna)
     public boolean jogar(String posiçãoMatriz){
-        if(jogadorDaVez == 1) jogadorDaVez = -1;
-        else jogadorDaVez = 1;
+        if(jogadorDaVez == 0) jogadorDaVez = jogadorDaPartida;
+        else jogadorDaVez = jogadorDaVez*-1;
 
         Integer linha = Integer.parseInt(posiçãoMatriz.substring(0, 1)) ;
         Integer coluna = Integer.parseInt(posiçãoMatriz.substring(1));
@@ -65,7 +67,11 @@ public class JogoDaVelha {
                 if(this.matrizTabuleiro[i][j] != jogadorDaVez) break;
                 aux++;
             }
-            if(aux == 3) return true;
+            if(aux == 3){
+                jogadorDaPartida = jogadorDaPartida*-1;
+                jogadorDaVez = 0;
+                return true;
+            }
             else aux = 0;
         }
         aux = 0;
@@ -75,21 +81,44 @@ public class JogoDaVelha {
                 if(this.matrizTabuleiro[j][i] != jogadorDaVez) break;
                 aux++;
             }
-            if(aux == 3) return true;
+            if(aux == 3){
+                jogadorDaPartida = jogadorDaPartida*-1;
+                jogadorDaVez = 0;
+                return true;
+            }
             else aux = 0;
         }
         //diagonais
         if      ((this.matrizTabuleiro[0][0] == jogadorDaVez) &&
                 (this.matrizTabuleiro[1][1] == jogadorDaVez) &&
-                (this.matrizTabuleiro[2][2] == jogadorDaVez))  return true;
+                (this.matrizTabuleiro[2][2] == jogadorDaVez)){
+
+                    jogadorDaPartida = jogadorDaPartida*-1;
+                    jogadorDaVez = 0;
+                    return true;
+        }
         if      ((this.matrizTabuleiro[0][2] == jogadorDaVez) &&
                 (this.matrizTabuleiro[1][1] == jogadorDaVez) &&
-                (this.matrizTabuleiro[2][0] == jogadorDaVez)) return true;
+                (this.matrizTabuleiro[2][0] == jogadorDaVez)){
+
+                    jogadorDaPartida = jogadorDaPartida*-1;
+                    jogadorDaVez = 0;
+                    return true;
+        }
 
         return false;
     }
 
     public void esvaziaTabuleiro(){
+        if(jogadorDaPartida == 1){
+            jogadorDaPartida = -1;
+            jogadorDaVez = 1;
+        }
+        else{
+            jogadorDaPartida = 1;
+            jogadorDaVez = -1;
+        }
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 this.matrizTabuleiro[i][j] = 0;

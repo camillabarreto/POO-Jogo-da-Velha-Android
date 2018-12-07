@@ -86,7 +86,7 @@ public class TabuleiroActivity extends AppCompatActivity {
     private boolean fimJogo(){
         if(jogoDaVelha.ganhou()){
             int i;
-            if(jogoDaVelha.getJogadorDaVez() < 0){
+            if(jogoDaVelha.getJogadorDaPartida() < 0){
                 String a = placar[0].getText().toString();
                 i = Integer.parseInt(a) + 1;
                 placar[0].setText(""+i);
