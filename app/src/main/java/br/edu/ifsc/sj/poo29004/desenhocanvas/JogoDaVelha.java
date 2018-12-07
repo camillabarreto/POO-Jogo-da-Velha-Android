@@ -48,6 +48,15 @@ public class JogoDaVelha {
         return true;
     }
 
+    public boolean tabuleiroVazio(){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if(matrizTabuleiro[i][j] != 0) return false;
+            }
+        }
+        return true;
+    }
+
     public boolean ganhou(){
         int aux = 0;
         //linhas
@@ -87,4 +96,196 @@ public class JogoDaVelha {
             }
         }
     }
+
+    /**
+     * Esse método é responsável por realizar as jogadas da Inteligencia (PC)
+     */
+    public String jogadaInteligente(){
+
+        String pos;
+
+        if(tabuleiroVazio()){
+            System.out.println("=======================TABULEIRO VAZIO");
+            //jogar no meio do tabuleiro
+            pos = "11";
+            this.jogar(pos);
+            return pos;
+        }
+
+        pos = jogadaDaVitoria();
+        if(pos.length() > 0) {
+            System.out.println("=======================JOGADA DA VITORIA");
+            return pos;
+        }
+
+        pos = bloquearJogada();
+        if(pos.length() > 0) {
+            System.out.println("=======================JOGADA BLOQUEADA");
+            return pos;
+        }
+
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if(matrizTabuleiro[i][j] == 0){
+                    System.out.println("=======================JOGADA ESTRATÉGICA: " + pos);
+                    pos  = i + "" + j;
+                    i = 2;
+                    j = 2;
+                }
+            }
+        }
+        jogar(pos);
+
+        return pos;
+    }
+
+    private String bloquearJogada(){
+        //verificando linhas
+        int somatorio;
+        for (int i = 0; i < 3; i++) {
+            somatorio = 0;
+            for (int j = 0; j < 3; j++) {
+                somatorio = somatorio + matrizTabuleiro[i][j];
+            }
+            if(somatorio == jogadorDaVez*2) {
+                //procurar posição que está vazia para jogar nela
+                for (int j = 0; j < 3; j++) {
+                    if (matrizTabuleiro[i][j] == 0) {
+                        String pos = i + "" + j;
+                        jogar(pos);
+                        return pos;
+                    }
+                }
+            }
+        }
+
+        //verificando colunas
+        for (int i = 0; i < 3; i++) {
+            somatorio = 0;
+            for (int j = 0; j < 3; j++) {
+                somatorio = somatorio + matrizTabuleiro[j][i];
+            }
+            if(somatorio == jogadorDaVez*2){
+                //procurar posição que está vazia para jogar nela
+                for (int j = 0; j < 3; j++) {
+                    if(matrizTabuleiro[j][i] == 0){
+                        String pos = j + "" + i;
+                        jogar(pos);
+                        return pos;
+                    }
+                }
+            }
+            somatorio = 0;
+        }
+
+        //verificando diagonal principal
+        somatorio = 0;
+        for (int i = 0, j = 0; i < 3; i++, j++) {
+            somatorio = somatorio + matrizTabuleiro[i][j];
+        }
+        if(somatorio == jogadorDaVez*2){
+            //procurar posição que está vazia para jogar nela
+            for (int i = 0, j = 0; i < 3; i++, j++) {
+                if(matrizTabuleiro[i][j] == 0){
+                    String pos = i + "" + j;
+                    jogar(pos);
+                    return pos;
+                }
+            }
+        }
+
+        //verificando diagonal secundária
+        somatorio = 0;
+        for (int i = 0, j = 2; i < 3; i++, j--) {
+            somatorio = somatorio + matrizTabuleiro[i][j];
+        }
+        if(somatorio == jogadorDaVez*2){
+            //procurar posição que está vazia para jogar nela
+            for (int i = 0, j = 2; i < 3; i++, j--) {
+                if(matrizTabuleiro[i][j] == 0){
+                    String pos = i + "" + j;
+                    jogar(pos);
+                    return pos;
+                }
+            }
+        }
+
+        return "";
+    }
+
+    private String jogadaDaVitoria(){
+        //verificando linhas
+        int somatorio;
+        for (int i = 0; i < 3; i++) {
+            somatorio = 0;
+            for (int j = 0; j < 3; j++) {
+                somatorio = somatorio + matrizTabuleiro[i][j];
+            }
+            if(somatorio == jogadorDaVez*-2) {
+                //procurar posição que está vazia para jogar nela
+                for (int j = 0; j < 3; j++) {
+                    if (matrizTabuleiro[i][j] == 0) {
+                        String pos = i + "" + j;
+                        jogar(pos);
+                        return pos;
+                    }
+                }
+            }
+        }
+
+        //verificando colunas
+        for (int i = 0; i < 3; i++) {
+            somatorio = 0;
+            for (int j = 0; j < 3; j++) {
+                somatorio = somatorio + matrizTabuleiro[j][i];
+            }
+            if(somatorio == jogadorDaVez*-2){
+                //procurar posição que está vazia para jogar nela
+                for (int j = 0; j < 3; j++) {
+                    if(matrizTabuleiro[j][i] == 0){
+                        String pos = j + "" + i;
+                        jogar(pos);
+                        return pos;
+                    }
+                }
+            }
+            somatorio = 0;
+        }
+
+        //verificando diagonal principal
+        somatorio = 0;
+        for (int i = 0, j = 0; i < 3; i++, j++) {
+            somatorio = somatorio + matrizTabuleiro[i][j];
+        }
+        if(somatorio == jogadorDaVez*-2){
+            //procurar posição que está vazia para jogar nela
+            for (int i = 0, j = 0; i < 3; i++, j++) {
+                if(matrizTabuleiro[i][j] == 0){
+                    String pos = i + "" + j;
+                    jogar(pos);
+                    return pos;
+                }
+            }
+        }
+
+        //verificando diagonal secundária
+        somatorio = 0;
+        for (int i = 0, j = 2; i < 3; i++, j--) {
+            somatorio = somatorio + matrizTabuleiro[i][j];
+        }
+        if(somatorio == jogadorDaVez*-2){
+            //procurar posição que está vazia para jogar nela
+            for (int i = 0, j = 2; i < 3; i++, j--) {
+                if(matrizTabuleiro[i][j] == 0){
+                    String pos = i + "" + j;
+                    jogar(pos);
+                    return pos;
+                }
+            }
+        }
+
+        return "";
+    }
+
 }
