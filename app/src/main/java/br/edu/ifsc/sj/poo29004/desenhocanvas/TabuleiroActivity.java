@@ -12,6 +12,8 @@ public class TabuleiroActivity extends AppCompatActivity {
     private Button[][] matrizButtons;
     private String[] simbolo;
     private TextView[] placar;
+    private int INDICE_JOGADOR = 0;
+    private int INDICE_INTELIGENCIA = 1;
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -21,8 +23,8 @@ public class TabuleiroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tabuleiro);
 
         this.simbolo = new String[2];
-        this.simbolo[0] = "X";
-        this.simbolo[1] = "O";
+        this.simbolo[INDICE_JOGADOR] = "X"; //simbolo do Jogador usuário
+        this.simbolo[INDICE_INTELIGENCIA] = "O"; //simbolo do PC inteligencia
 
         matrizButtons = new Button[3][3];
         matrizButtons[0][0] = findViewById(R.id.button00);
@@ -36,8 +38,8 @@ public class TabuleiroActivity extends AppCompatActivity {
         matrizButtons[2][2] = findViewById(R.id.button22);
 
         placar = new TextView[2];
-        placar[0] = findViewById(R.id.placarEu);
-        placar[1] = findViewById(R.id.placarPc);
+        placar[INDICE_JOGADOR] = findViewById(R.id.placarEu);
+        placar[INDICE_INTELIGENCIA] = findViewById(R.id.placarPc);
 
         this.jogoDaVelha = new JogoDaVelha();
     }
@@ -74,7 +76,7 @@ public class TabuleiroActivity extends AppCompatActivity {
 
         if(!fimJogo()){
                 System.out.println("JOGADA INTELIGENTE");
-                String pos = this.jogoDaVelha.jogadaInteligente();
+                String pos = this.jogoDaVelha.inteligencia();
                 int i = Integer.parseInt(pos.substring(0,1));
                 int j = Integer.parseInt(pos.substring(1));
                 matrizButtons[i][j].setText(getSimbolo());
@@ -83,16 +85,22 @@ public class TabuleiroActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Esse método será chamado após a jogada ser executada, portanto a vez já foi passada
+     * Se for a vez do Jogador usuário, então virória do PC
+     * Se for a vez do PC, então virória do Jogador usuário
+     * @return true se o tabuleiro está cheio ou ocorreu vitória
+     */
     private boolean fimJogo(){
         if(jogoDaVelha.ganhou()){
             if(jogoDaVelha.getJogadorDaVez() == 1){
-                String a = placar[0].getText().toString();
+                String a = placar[INDICE_JOGADOR].getText().toString();
                 int i = Integer.parseInt(a) + 1;
-                placar[0].setText(""+i);
+                placar[INDICE_JOGADOR].setText(""+i);
             }else{
-                String a = placar[1].getText().toString();
+                String a = placar[INDICE_INTELIGENCIA].getText().toString();
                 int i = Integer.parseInt(a) + 1;
-                placar[1].setText(""+i);
+                placar[INDICE_INTELIGENCIA].setText(""+i);
             }
             System.out.println("GANHOU - jogador " + getSimbolo());
 
@@ -129,9 +137,14 @@ public class TabuleiroActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Esse método será chamado após a jogada ser executada, portanto a vez já foi passada
+     * Se for a vez do Jogador usuário, então é desenhado o simbolo do PC
+     * Se for a vez do PC, então é desenhado o simbolo do Jogador usuário
+     * @return o simbolo do último jogador que realizou uma jogada
+     */
     private String getSimbolo() {
-        int pos  = jogoDaVelha.getJogadorDaVez();
-        if(pos == -1) return simbolo[pos+1];
-        else return simbolo[pos];
+        if(jogoDaVelha.getJogadorDaVez() == -1) return simbolo[INDICE_JOGADOR];
+        else return simbolo[INDICE_INTELIGENCIA];
     }
 }

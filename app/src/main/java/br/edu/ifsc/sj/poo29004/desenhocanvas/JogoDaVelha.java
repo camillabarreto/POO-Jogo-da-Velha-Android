@@ -112,6 +112,7 @@ public class JogoDaVelha {
     }
 
     public void esvaziaTabuleiro(){
+        jogadorDaVez = -1;
 //        if(jogadorDaPartida == 1){
 //            jogadorDaPartida = -1;
 //            jogadorDaVez = 1;
@@ -131,10 +132,12 @@ public class JogoDaVelha {
     /**
      * Esse método é responsável por realizar as jogadas da Inteligencia (PC)
      */
-    public String jogadaInteligente(){
+    public String inteligencia(){
 
+        //Posição que a inteligencia vai fazer a jogada
         String pos;
 
+        //Jogar no meio se tabuleiro estiver vazio
         if(tabuleiroVazio()){
             System.out.println("=======================TABULEIRO VAZIO");
             //jogar no meio do tabuleiro
@@ -143,51 +146,61 @@ public class JogoDaVelha {
             return pos;
         }
 
-        pos = jogaPC(-1);
+        //Realizar jogada da vitória se existir
+        pos = jogarInteligencia(-1);
         if(pos.length() > 0) {
             System.out.println("=======================JOGADA DA VITORIA");
             return pos;
         }
 
-        pos = jogaPC(1);
+        //Bloquear jogada da vitória adversária se existir
+        pos = jogarInteligencia(1);
         if(pos.length() > 0) {
             System.out.println("=======================JOGADA BLOQUEADA");
             return pos;
         }
 
+        //Realizar jogada estratégica
         pos = jogadaEstrategica();
         jogar(pos);
         System.out.println("=======================JOGADA ESTRATÉGICA");
-
         return pos;
     }
 
+    /**
+     * @return
+     */
     private String jogadaEstrategica(){
 
         String pos = "";
 
-        if (matrizTabuleiro[1][1] == 0){
-            pos = "11";
+//        //Se Jogador usuário tem uma jogada no meio
+//        if(matrizTabuleiro[1][1] != 0){
+//            if(Math.abs(matrizTabuleiro[0][0] - matrizTabuleiro[2][2]) == 2){
+//                jogar("02");
+//            }
+//        }
+//
+
+
+        //jogar em um dos cantos
+        if(matrizTabuleiro[0][0] == 0){
+            pos = "00";
+        }
+        else if (matrizTabuleiro[2][2] == 0){
+            pos = "22";
+        }
+        else if (matrizTabuleiro[0][2] == 0){
+            pos = "02";
+        }
+        else if (matrizTabuleiro[2][0] == 0){
+            pos = "20";
         }else{
-            //jogar em um dos cantos
-            if(matrizTabuleiro[0][0] == 0){
-                pos = "00";
-            }
-            else if (matrizTabuleiro[2][2] == 0){
-                pos = "22";
-            }
-            else if (matrizTabuleiro[0][2] == 0){
-                pos = "02";
-            }
-            else if (matrizTabuleiro[2][0] == 0){
-                pos = "20";
-            }else{
-                //procurar uma posição vazia
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        if(matrizTabuleiro[i][j] == 0){
-                            return i + "" + j;
-                        }
+            //procurar uma posição vazia
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if(matrizTabuleiro[i][j] == 0){
+                        return i + "" + j;
                     }
                 }
             }
@@ -196,10 +209,15 @@ public class JogoDaVelha {
         return pos;
     }
 
-    private String jogaPC(int jogador){
+    /**
+     * Esse método verifica se falta somente uma jogada para Jogador (usuário) ou Inteligencia vencer
+     * @param jogador: Jogador usuário 1 ; Inteligencia -1
+     * @return posição onde a Inteligencia deve fazer sua jogada (se não retorna String vazia)
+     */
+    private String jogarInteligencia(int jogador){
         //verificando linhas
         for (int i = 0; i < 3; i++) {
-            if(verificaLinha(i) == jogador*2){
+            if(somatoriaLinha(i) == jogador*2){
                 //procurar posição que está vazia para jogar nela
                 String pos = posiçãoVaziaLinha(i);
                 jogar(pos);
@@ -219,7 +237,7 @@ public class JogoDaVelha {
 
         //verificando diagonal principal
         for (int j = 0; j < 3; j++) {
-            if(verificaDiagonalP() == jogador*2){
+            if(somatoriaDiagonalP() == jogador*2){
                 //procurar posição que está vazia para jogar nela
                 String pos = posiçãoVaziaDiagonalP();
                 jogar(pos);
@@ -229,7 +247,7 @@ public class JogoDaVelha {
 
         //verificando diagonal secundária
         for (int j = 0; j < 3; j++) {
-            if(verificaDiagonalS() == jogador*2){
+            if(somatoriaDiagonalS() == jogador*2){
                 //procurar posição que está vazia para jogar nela
                 String pos = posiçãoVaziaDiagonalS();
                 jogar(pos);
@@ -239,7 +257,7 @@ public class JogoDaVelha {
         return "";
     }
 
-    private int verificaLinha(int i){
+    private int somatoriaLinha(int i){
         int somatoria = 0;
         for (int j = 0; j < 3; j++) {
             somatoria = somatoria + matrizTabuleiro[i][j];
@@ -277,7 +295,7 @@ public class JogoDaVelha {
         return posição;
     }
 
-    private int verificaDiagonalP(){
+    private int somatoriaDiagonalP(){
         int somatoria = 0;
         for (int j = 0, i = 0; j < 3; j++, i++) {
             somatoria = somatoria + matrizTabuleiro[i][j];
@@ -296,7 +314,7 @@ public class JogoDaVelha {
         return posição;
     }
 
-    private int verificaDiagonalS(){
+    private int somatoriaDiagonalS(){
         int somatoria = 0;
         for (int i = 0, j = 2; i < 3; i++, j--) {
             somatoria = somatoria + matrizTabuleiro[i][j];
