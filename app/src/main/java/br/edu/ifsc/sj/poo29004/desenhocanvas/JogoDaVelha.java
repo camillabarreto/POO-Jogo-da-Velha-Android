@@ -26,10 +26,12 @@ public class JogoDaVelha {
 
     //String posiçãoMatriz no formato formato: ij (i: linha , j: coluna)
     public boolean jogar(String posiçãoMatriz){
+
 //        if(jogadorDaVez == 0); //jogadorDaVez = jogadorDaPartida;
 //        else jogadorDaVez = jogadorDaVez*-1;
         jogadorDaVez = jogadorDaVez*-1;
-        System.out.println("JOGADOR DA VEZ: " + jogadorDaVez);
+
+        //System.out.println("JOGADOR DA VEZ: " + jogadorDaVez);
 
         Integer linha = Integer.parseInt(posiçãoMatriz.substring(0, 1)) ;
         Integer coluna = Integer.parseInt(posiçãoMatriz.substring(1));
@@ -112,7 +114,9 @@ public class JogoDaVelha {
     }
 
     public void esvaziaTabuleiro(){
+        //Setando para que na próxima jogada
         jogadorDaVez = -1;
+
 //        if(jogadorDaPartida == 1){
 //            jogadorDaPartida = -1;
 //            jogadorDaVez = 1;
@@ -139,7 +143,8 @@ public class JogoDaVelha {
 
         //Jogar no meio se tabuleiro estiver vazio
         if(tabuleiroVazio()){
-            System.out.println("=======================TABULEIRO VAZIO");
+            //System.out.println("=======================TABULEIRO VAZIO");
+
             //jogar no meio do tabuleiro
             pos = "11";
             this.jogar(pos);
@@ -149,21 +154,21 @@ public class JogoDaVelha {
         //Realizar jogada da vitória se existir
         pos = jogarInteligencia(-1);
         if(pos.length() > 0) {
-            System.out.println("=======================JOGADA DA VITORIA");
+            //System.out.println("=======================JOGADA DA VITORIA");
             return pos;
         }
 
         //Bloquear jogada da vitória adversária se existir
         pos = jogarInteligencia(1);
         if(pos.length() > 0) {
-            System.out.println("=======================JOGADA BLOQUEADA");
+            //System.out.println("=======================JOGADA BLOQUEADA");
             return pos;
         }
 
         //Realizar jogada estratégica
         pos = jogadaEstrategica();
         jogar(pos);
-        System.out.println("=======================JOGADA ESTRATÉGICA");
+        //System.out.println("=======================JOGADA ESTRATÉGICA");
         return pos;
     }
 
@@ -182,9 +187,12 @@ public class JogoDaVelha {
 //        }
 //
 
-
+        //jogar no meio do tabuleiro
+        if(matrizTabuleiro[1][1] == 0){
+            pos = "11";
+        }
         //jogar em um dos cantos
-        if(matrizTabuleiro[0][0] == 0){
+        else if(matrizTabuleiro[0][0] == 0){
             pos = "00";
         }
         else if (matrizTabuleiro[2][2] == 0){
