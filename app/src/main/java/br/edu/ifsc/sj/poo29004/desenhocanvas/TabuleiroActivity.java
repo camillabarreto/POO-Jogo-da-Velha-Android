@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.File;
+
 public class TabuleiroActivity extends AppCompatActivity {
 
     private JogoDaVelha jogoDaVelha;
@@ -43,84 +45,39 @@ public class TabuleiroActivity extends AppCompatActivity {
         matrizButtons[2][1] = findViewById(R.id.button21);
         matrizButtons[2][2] = findViewById(R.id.button22);
 
+
         placar = new TextView[2];
         placar[INDICE_JOGADOR] = findViewById(R.id.placarEu);
         placar[INDICE_INTELIGENCIA] = findViewById(R.id.placarPc);
 
+//        //Verifica se tem salvo placar do Jogador
+//        if(savedInstanceState.containsKey((Integer.toString(INDICE_JOGADOR)))){
+//            placar[INDICE_JOGADOR].setText(savedInstanceState.getString(Integer.toString(INDICE_JOGADOR)));
+//        }
+//        //Verifica se tem salvo placar da Inteligencia
+//        if(savedInstanceState.containsKey((Integer.toString(INDICE_INTELIGENCIA)))){
+//            placar[INDICE_JOGADOR].setText(savedInstanceState.getString(Integer.toString(INDICE_INTELIGENCIA)));
+//        }
+//
+//        //Verifica se tem salvo os valores da matriz de botões
+//        for (int i = 0; i < 3; i++) {
+//            for (int j = 0; j < 3; j++) {
+//                if(savedInstanceState.containsKey("but"+i+""+j)){
+//                    matrizButtons[i][j].setText(savedInstanceState.getString("but"+i+""+j));
+//                }
+//            }
+//        }
+//
+//        //Verifica se tem salvo os valores da matriz JogoDaVelha
+//        for (int i = 0; i < 3; i++) {
+//            for (int j = 0; j < 3; j++) {
+//                if(savedInstanceState.containsKey("but"+i+""+j)){
+//                    matrizButtons[i][j].setText(savedInstanceState.getInt("num"+i+""+j));
+//                }
+//            }
+//        }
+
         this.jogoDaVelha = new JogoDaVelha();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "=============================| OnPause");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "=============================| OnStart");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "=============================| OnStop");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "=============================| OnRestart");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d(TAG, "=============================| OnResume");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "=============================| OnDestroy");
-    }
-
-    /**
-     * Este método será responsável por salvar as informações atuais do jogo
-     * - Matriz de botões
-     * - Instancia Jogo da Velha
-     * - Placar
-     * @param outState
-     */
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.d(TAG, "=============================| OnSaveInstanceState");
-        //outState.putInt("matrizBotões", matrizButtons);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Log.d(TAG, "=============================| OnBackPressed");
-
-        //implementar diálogo aqui
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("TESTE")
-                .setCancelable(false)
-                .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finishAndRemoveTask();
-                    }
-                })
-                .setNegativeButton(R.string.nao, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 
     public void click(View view) {
@@ -205,5 +162,100 @@ public class TabuleiroActivity extends AppCompatActivity {
     private String getSimbolo() {
         if(jogoDaVelha.getJogadorDaVez() == 1) return simbolo[INDICE_JOGADOR];
         else return simbolo[INDICE_INTELIGENCIA];
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "=============================| OnPause");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "=============================| OnStart");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "=============================| OnStop");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "=============================| OnRestart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "=============================| OnResume");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "=============================| OnDestroy");
+    }
+
+    /**
+     * Este método será responsável por salvar as informações atuais do jogo
+     * - Matriz de botões
+     * - Instancia Jogo da Velha
+     * - Placar
+     * @param outState
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "=============================| OnSaveInstanceState");
+        //outState.putInt("matrizBotões", matrizButtons);
+
+        //Salvando os valores da matriz de Botões
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                outState.putString("but"+i+""+j, matrizButtons[i][j].getText().toString());
+            }
+        }
+
+        //Salvando os valores da matriz JogoDaVelha
+        Integer[][] matrizTabuleiro = jogoDaVelha.getMatrizTabuleiro();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                outState.putInt("num"+i+""+j, matrizTabuleiro[i][j]);
+            }
+        }
+
+        //Salvando o placar
+        outState.putString(Integer.toString(INDICE_JOGADOR), placar[INDICE_JOGADOR].getText().toString());
+        outState.putString(Integer.toString(INDICE_INTELIGENCIA), placar[INDICE_INTELIGENCIA].getText().toString());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d(TAG, "=============================| OnBackPressed");
+
+//        //implementar diálogo aqui
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage("TESTE")
+//                .setCancelable(false)
+//                .setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        //finishAndRemoveTask();
+//                        dialog.cancel();
+//                    }
+//                })
+//                .setNegativeButton(R.string.nao, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
+//        AlertDialog alert = builder.create();
+//        alert.show();
     }
 }

@@ -24,6 +24,14 @@ public class JogoDaVelha {
 
     public int getJogadorDaPartida() { return jogadorDaPartida; }
 
+    public Integer[][] getMatrizTabuleiro() {
+        return matrizTabuleiro;
+    }
+
+    public void setMatrizTabuleiro(Integer[][] matrizTabuleiro) {
+        this.matrizTabuleiro = matrizTabuleiro;
+    }
+
     //String posiçãoMatriz no formato formato: ij (i: linha , j: coluna)
     public boolean jogar(String posiçãoMatriz){
 
