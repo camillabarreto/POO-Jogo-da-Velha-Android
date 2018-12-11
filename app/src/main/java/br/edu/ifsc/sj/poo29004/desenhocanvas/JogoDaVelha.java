@@ -143,13 +143,13 @@ public class JogoDaVelha {
             return pos;
         }
 
-        pos = jogadaDaVitoria();
+        pos = jogaPC(-1);
         if(pos.length() > 0) {
             System.out.println("=======================JOGADA DA VITORIA");
             return pos;
         }
 
-        pos = bloquearJogada();
+        pos = jogaPC(1);
         if(pos.length() > 0) {
             System.out.println("=======================JOGADA BLOQUEADA");
             return pos;
@@ -196,10 +196,10 @@ public class JogoDaVelha {
         return pos;
     }
 
-    private String bloquearJogada(){
+    private String jogaPC(int jogador){
         //verificando linhas
         for (int i = 0; i < 3; i++) {
-            if(verificaLinha(i) == jogadorDaVez*2){
+            if(verificaLinha(i) == jogador*2){
                 //procurar posição que está vazia para jogar nela
                 String pos = posiçãoVaziaLinha(i);
                 jogar(pos);
@@ -209,7 +209,7 @@ public class JogoDaVelha {
 
         //verificando colunas
         for (int j = 0; j < 3; j++) {
-            if(verificaColuna(j) == jogadorDaVez*2){
+            if(somatoriaColuna(j) == jogador*2){
                 //procurar posição que está vazia para jogar nela
                 String pos = posiçãoVaziaColuna(j);
                 jogar(pos);
@@ -219,9 +219,9 @@ public class JogoDaVelha {
 
         //verificando diagonal principal
         for (int j = 0; j < 3; j++) {
-            if(verificaDiagonalP() == jogadorDaVez*2){
+            if(verificaDiagonalP() == jogador*2){
                 //procurar posição que está vazia para jogar nela
-                String pos = posiçãoVaziaDiagonalP(j);
+                String pos = posiçãoVaziaDiagonalP();
                 jogar(pos);
                 return pos;
             }
@@ -229,135 +229,90 @@ public class JogoDaVelha {
 
         //verificando diagonal secundária
         for (int j = 0; j < 3; j++) {
-            if(verificaDiagonalS() == jogadorDaVez*2){
+            if(verificaDiagonalS() == jogador*2){
                 //procurar posição que está vazia para jogar nela
-                String pos = posiçãoVaziaDiagonalS(j);
+                String pos = posiçãoVaziaDiagonalS();
                 jogar(pos);
                 return pos;
             }
         }
-
-        return "";
-    }
-
-    private String jogadaDaVitoria(){
-        //verificando linhas
-        for (int i = 0; i < 3; i++) {
-            if(verificaLinha(i) == jogadorDaVez*-2){
-                //procurar posição que está vazia para jogar nela
-                String pos = posiçãoVaziaLinha(i);
-                jogar(pos);
-                return pos;
-            }
-        }
-
-        //verificando colunas
-        for (int j = 0; j < 3; j++) {
-            if(verificaColuna(j) == jogadorDaVez*-2){
-                //procurar posição que está vazia para jogar nela
-                String pos = posiçãoVaziaColuna(j);
-                jogar(pos);
-                return pos;
-            }
-        }
-
-        //verificando diagonal principal
-        for (int j = 0; j < 3; j++) {
-            if(verificaDiagonalP() == jogadorDaVez*-2){
-                //procurar posição que está vazia para jogar nela
-                String pos = posiçãoVaziaDiagonalP(j);
-                jogar(pos);
-                return pos;
-            }
-        }
-
-        //verificando diagonal secundária
-        for (int j = 0; j < 3; j++) {
-            if(verificaDiagonalS() == jogadorDaVez*-2){
-                //procurar posição que está vazia para jogar nela
-                String pos = posiçãoVaziaDiagonalS(j);
-                jogar(pos);
-                return pos;
-            }
-        }
-
         return "";
     }
 
     private int verificaLinha(int i){
-        int aux = 0;
+        int somatoria = 0;
         for (int j = 0; j < 3; j++) {
-            aux = aux + matrizTabuleiro[i][j];
+            somatoria = somatoria + matrizTabuleiro[i][j];
         }
-        return aux;
+        return somatoria;
     }
 
     private String posiçãoVaziaLinha(int i){
-        String aux = "";
+        String posição = "";
         for (int j = 0; j < 3; j++) {
             if(matrizTabuleiro[i][j] == 0){
-                aux = i + "" + j;
+                posição = i + "" + j;
                 break;
             }
         }
-        return aux;
+        return posição;
     }
 
-    private int verificaColuna(int j){
-        int aux = 0;
+    private int somatoriaColuna(int j){
+        int somatoria = 0;
         for (int i = 0; i < 3; i++) {
-            aux = aux + matrizTabuleiro[i][j];
+            somatoria = somatoria + matrizTabuleiro[i][j];
         }
-        return aux;
+        return somatoria;
     }
 
     private String posiçãoVaziaColuna(int j){
-        String aux = "";
+        String posição = "";
         for (int i = 0; i < 3; i++) {
             if(matrizTabuleiro[i][j] == 0){
-                aux = i + "" + j;
+                posição = i + "" + j;
                 break;
             }
         }
-        return aux;
+        return posição;
     }
 
     private int verificaDiagonalP(){
-        int aux = 0;
+        int somatoria = 0;
         for (int j = 0, i = 0; j < 3; j++, i++) {
-            aux = aux + matrizTabuleiro[i][j];
+            somatoria = somatoria + matrizTabuleiro[i][j];
         }
-        return aux;
+        return somatoria;
     }
 
-    private String posiçãoVaziaDiagonalP(int j){
-        String aux = "";
-        for (int i = 0; i < 3; i++) {
+    private String posiçãoVaziaDiagonalP(){
+        String posição = "";
+        for (int j = 0, i = 0; j < 3; j++, i++) {
             if(matrizTabuleiro[i][j] == 0){
-                aux = i + "" + j;
+                posição = i + "" + j;
                 break;
             }
         }
-        return aux;
+        return posição;
     }
 
     private int verificaDiagonalS(){
-        int aux = 0;
+        int somatoria = 0;
         for (int i = 0, j = 2; i < 3; i++, j--) {
-            aux = aux + matrizTabuleiro[i][j];
+            somatoria = somatoria + matrizTabuleiro[i][j];
         }
-        return aux;
+        return somatoria;
     }
 
-    private String posiçãoVaziaDiagonalS(int j){
-        String aux = "";
-        for (int i = 0; i < 3; i++) {
+    private String posiçãoVaziaDiagonalS(){
+        String posição = "";
+        for (int i = 0, j = 2; i < 3; i++, j--) {
             if(matrizTabuleiro[i][j] == 0){
-                aux = i + "" + j;
+                posição = i + "" + j;
                 break;
             }
         }
-        return aux;
+        return posição;
     }
 
 }
