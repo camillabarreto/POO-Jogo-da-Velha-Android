@@ -85,14 +85,13 @@ public class TabuleiroActivity extends AppCompatActivity {
 
     private boolean fimJogo(){
         if(jogoDaVelha.ganhou()){
-            int i;
-            if(jogoDaVelha.getJogadorDaPartida() < 0){
+            if(jogoDaVelha.getJogadorDaVez() == 1){
                 String a = placar[0].getText().toString();
-                i = Integer.parseInt(a) + 1;
+                int i = Integer.parseInt(a) + 1;
                 placar[0].setText(""+i);
             }else{
                 String a = placar[1].getText().toString();
-                i = Integer.parseInt(a) + 1;
+                int i = Integer.parseInt(a) + 1;
                 placar[1].setText(""+i);
             }
             System.out.println("GANHOU - jogador " + getSimbolo());
