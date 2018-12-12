@@ -1,17 +1,12 @@
 package br.edu.ifsc.sj.poo29004.desenhocanvas;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.nfc.Tag;
-import android.support.v7.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import java.io.File;
 
 public class TabuleiroActivity extends AppCompatActivity {
 
@@ -23,6 +18,8 @@ public class TabuleiroActivity extends AppCompatActivity {
     private int INDICE_INTELIGENCIA = 1;
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private SharedPreferences mSharedPrefs;
+    public static final String CHAVE_PREFS = "chaveSharedPrefs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +31,7 @@ public class TabuleiroActivity extends AppCompatActivity {
         this.simbolo[INDICE_JOGADOR] = "X"; //simbolo do Jogador usuário
         this.simbolo[INDICE_INTELIGENCIA] = "O"; //simbolo do PC inteligencia
 
+        //Criando matriz com instancias dos botões do layout
         matrizButtons = new Button[3][3];
         matrizButtons[0][0] = findViewById(R.id.button00);
         matrizButtons[0][1] = findViewById(R.id.button01);
@@ -46,38 +44,49 @@ public class TabuleiroActivity extends AppCompatActivity {
         matrizButtons[2][2] = findViewById(R.id.button22);
 
 
+        //Criando vetor com instancias dos textview do layout
         placar = new TextView[2];
         placar[INDICE_JOGADOR] = findViewById(R.id.placarEu);
         placar[INDICE_INTELIGENCIA] = findViewById(R.id.placarPc);
 
-//        //Verifica se tem salvo placar do Jogador
-//        if(savedInstanceState.containsKey((Integer.toString(INDICE_JOGADOR)))){
-//            placar[INDICE_JOGADOR].setText(savedInstanceState.getString(Integer.toString(INDICE_JOGADOR)));
-//        }
-//        //Verifica se tem salvo placar da Inteligencia
-//        if(savedInstanceState.containsKey((Integer.toString(INDICE_INTELIGENCIA)))){
-//            placar[INDICE_JOGADOR].setText(savedInstanceState.getString(Integer.toString(INDICE_INTELIGENCIA)));
-//        }
+        this.jogoDaVelha = new JogoDaVelha();
+
+        //Código comentado: Não está funcionando o código para buscar valore em disco
+
+//        //Verificando se possui valores salvos em disco
+//        mSharedPrefs = getSharedPreferences(CHAVE_PREFS, MODE_PRIVATE);  //pegar valor do disco
+//
+//        //int placarJogador = mSharedPrefs.getInt((Integer.toString(INDICE_JOGADOR)), -1);
+//        int pj = mSharedPrefs.getInt(""+INDICE_JOGADOR, -1);
+//        if(pj != -1) placar[INDICE_JOGADOR].setText(Integer.toString(pj));
+//
+//        Integer pi = mSharedPrefs.getInt("1", -1);
+//        if(pi != -1) placar[INDICE_INTELIGENCIA].setText(Integer.toString(pi));
+//
 //
 //        //Verifica se tem salvo os valores da matriz de botões
+//        String texto = "";
 //        for (int i = 0; i < 3; i++) {
 //            for (int j = 0; j < 3; j++) {
-//                if(savedInstanceState.containsKey("but"+i+""+j)){
-//                    matrizButtons[i][j].setText(savedInstanceState.getString("but"+i+""+j));
-//                }
+//                texto = mSharedPrefs.getString("but"+i+""+j, "");
+//                if(texto.length() > 0) matrizButtons[i][j].setText(texto);
 //            }
 //        }
 //
 //        //Verifica se tem salvo os valores da matriz JogoDaVelha
+//        Integer [][] matrizAux = new Integer[3][3];
+//        int num = 0;
 //        for (int i = 0; i < 3; i++) {
 //            for (int j = 0; j < 3; j++) {
-//                if(savedInstanceState.containsKey("but"+i+""+j)){
-//                    matrizButtons[i][j].setText(savedInstanceState.getInt("num"+i+""+j));
+//                num = mSharedPrefs.getInt("num"+i+""+j, -2);
+//                if(num > -2){
+//                    System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>> NUM:"+num);
+//                    matrizAux[i][j] = num;
 //                }
 //            }
 //        }
-
-        this.jogoDaVelha = new JogoDaVelha();
+//        if(matrizAux.length > 0) this.jogoDaVelha = new JogoDaVelha(matrizAux);
+//        else this.jogoDaVelha = new JogoDaVelha();
     }
 
     public void click(View view) {
@@ -167,12 +176,6 @@ public class TabuleiroActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "=============================| OnPause");
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "=============================| OnStart");
@@ -202,6 +205,38 @@ public class TabuleiroActivity extends AppCompatActivity {
         Log.d(TAG, "=============================| OnDestroy");
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "=============================| OnPause");
+
+        //Código comentado: Não está funcionando o código para salvar em disco
+
+//        SharedPreferences.Editor prefsEditor = mSharedPrefs.edit();
+//
+//        //Salvando os valores da matriz de Botões
+//        for (int i = 0; i < 3; i++) {
+//            for (int j = 0; j < 3; j++) {
+//                prefsEditor.putString("but"+i+""+j, matrizButtons[i][j].getText().toString());
+//            }
+//        }
+//
+//        //Salvando os valores da matriz JogoDaVelha
+//        Integer[][] matrizTabuleiro = jogoDaVelha.getMatrizTabuleiro();
+//        for (int i = 0; i < 3; i++) {
+//            for (int j = 0; j < 3; j++) {
+//                prefsEditor.putInt("num"+i+""+j, matrizTabuleiro[i][j]);
+//            }
+//        }
+//
+//        //Salvando o placar
+//        prefsEditor.putString(Integer.toString(INDICE_JOGADOR), placar[INDICE_JOGADOR].getText().toString());
+//        prefsEditor.putString(Integer.toString(INDICE_INTELIGENCIA), placar[INDICE_INTELIGENCIA].getText().toString());
+//
+//
+//        prefsEditor.apply();
+    }
+
     /**
      * Este método será responsável por salvar as informações atuais do jogo
      * - Matriz de botões
@@ -213,26 +248,26 @@ public class TabuleiroActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "=============================| OnSaveInstanceState");
-        //outState.putInt("matrizBotões", matrizButtons);
-
-        //Salvando os valores da matriz de Botões
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                outState.putString("but"+i+""+j, matrizButtons[i][j].getText().toString());
-            }
-        }
-
-        //Salvando os valores da matriz JogoDaVelha
-        Integer[][] matrizTabuleiro = jogoDaVelha.getMatrizTabuleiro();
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                outState.putInt("num"+i+""+j, matrizTabuleiro[i][j]);
-            }
-        }
-
-        //Salvando o placar
-        outState.putString(Integer.toString(INDICE_JOGADOR), placar[INDICE_JOGADOR].getText().toString());
-        outState.putString(Integer.toString(INDICE_INTELIGENCIA), placar[INDICE_INTELIGENCIA].getText().toString());
+//        //outState.putInt("matrizBotões", matrizButtons);
+//
+//        //Salvando os valores da matriz de Botões
+//        for (int i = 0; i < 3; i++) {
+//            for (int j = 0; j < 3; j++) {
+//                outState.putString("but"+i+""+j, matrizButtons[i][j].getText().toString());
+//            }
+//        }
+//
+//        //Salvando os valores da matriz JogoDaVelha
+//        Integer[][] matrizTabuleiro = jogoDaVelha.getMatrizTabuleiro();
+//        for (int i = 0; i < 3; i++) {
+//            for (int j = 0; j < 3; j++) {
+//                outState.putInt("num"+i+""+j, matrizTabuleiro[i][j]);
+//            }
+//        }
+//
+//        //Salvando o placar
+//        outState.putString(Integer.toString(INDICE_JOGADOR), placar[INDICE_JOGADOR].getText().toString());
+//        outState.putString(Integer.toString(INDICE_INTELIGENCIA), placar[INDICE_INTELIGENCIA].getText().toString());
     }
 
     @Override

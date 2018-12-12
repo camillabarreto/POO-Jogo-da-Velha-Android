@@ -18,21 +18,52 @@ public class JogoDaVelha {
         this.esvaziaTabuleiro();
     }
 
+    /**
+     * NÃO ESTÁ EM FUNCIONAMENTO
+     * Esse método seria usado para quando o jogo foi salvo e o jogador deseja continuar de onde parou
+     * Porem essa parte do código não está rodando
+     * @param matrizTabuleiro
+     */
+    public JogoDaVelha(Integer[][] matrizTabuleiro) {
+        this.jogadorDaVez = -1;
+        this.jogadorDaPartida = 1;
+        this.matrizTabuleiro = matrizTabuleiro;
+        this.esvaziaTabuleiro();
+    }
+
+    /**
+     * NÃO ESTÁ EM FUNCIONAMENTO
+     * Esse método seria usado para quando o jogo foi salvo e o jogador deseja continuar de onde parou
+     * Porem essa parte do código não está rodando
+     * @return
+     */
+    public Integer[][] getMatrizTabuleiro() {
+        return matrizTabuleiro;
+    }
+
+    /**
+     * NÃO ESTÁ EM FUNCIONAMENTO
+     * Esse método seria usado para quando o jogo foi salvo e o jogador deseja continuar de onde parou
+     * Porem essa parte do código não está rodando
+     * @return
+     */
+    public void setMatrizTabuleiro(Integer[][] matrizTabuleiro) {
+        this.matrizTabuleiro = matrizTabuleiro;
+    }
+
+
+
     public Integer getJogadorDaVez() {
         return jogadorDaVez;
     }
 
     public int getJogadorDaPartida() { return jogadorDaPartida; }
 
-    public Integer[][] getMatrizTabuleiro() {
-        return matrizTabuleiro;
-    }
-
-    public void setMatrizTabuleiro(Integer[][] matrizTabuleiro) {
-        this.matrizTabuleiro = matrizTabuleiro;
-    }
-
-    //String posiçãoMatriz no formato formato: ij (i: linha , j: coluna)
+    /**
+     * Esse método é responsável por fazer as jogadas na matriz
+     * @param posiçãoMatriz no formato formato: ij (i: linha , j: coluna)
+     * @return true se jogada válida - false se jogada inválida
+     */
     public boolean jogar(String posiçãoMatriz){
 
 //        if(jogadorDaVez == 0); //jogadorDaVez = jogadorDaPartida;
@@ -142,7 +173,7 @@ public class JogoDaVelha {
     }
 
     /**
-     * Esse método é responsável por realizar as jogadas da Inteligencia (PC)
+     * Esse método é responsável por realizar a jogada da Inteligencia (PC)
      */
     public String inteligencia(){
 
@@ -151,9 +182,6 @@ public class JogoDaVelha {
 
         //Jogar no meio se tabuleiro estiver vazio
         if(tabuleiroVazio()){
-            //System.out.println("=======================TABULEIRO VAZIO");
-
-            //jogar no meio do tabuleiro
             pos = "11";
             this.jogar(pos);
             return pos;
@@ -162,38 +190,29 @@ public class JogoDaVelha {
         //Realizar jogada da vitória se existir
         pos = jogarInteligencia(-1);
         if(pos.length() > 0) {
-            //System.out.println("=======================JOGADA DA VITORIA");
             return pos;
         }
 
         //Bloquear jogada da vitória adversária se existir
         pos = jogarInteligencia(1);
         if(pos.length() > 0) {
-            //System.out.println("=======================JOGADA BLOQUEADA");
             return pos;
         }
 
         //Realizar jogada estratégica
         pos = jogadaEstrategica();
         jogar(pos);
-        //System.out.println("=======================JOGADA ESTRATÉGICA");
         return pos;
     }
 
     /**
-     * @return
+     * Esse método é responsável por realizar algumas jogadas da Inteligencia,
+     * quando não é possível ganhar ou bloquear uma jogada adversária
+     * @return posição
      */
     private String jogadaEstrategica(){
 
         String pos = "";
-
-//        //Se Jogador usuário tem uma jogada no meio
-//        if(matrizTabuleiro[1][1] != 0){
-//            if(Math.abs(matrizTabuleiro[0][0] - matrizTabuleiro[2][2]) == 2){
-//                jogar("02");
-//            }
-//        }
-//
 
         //jogar no meio do tabuleiro
         if(matrizTabuleiro[1][1] == 0){
@@ -273,6 +292,11 @@ public class JogoDaVelha {
         return "";
     }
 
+    /**
+     * Esse método realiza a somatória dos valores da linha I
+     * @param i - linha que será verificada
+     * @return somatoria
+     */
     private int somatoriaLinha(int i){
         int somatoria = 0;
         for (int j = 0; j < 3; j++) {
@@ -281,6 +305,11 @@ public class JogoDaVelha {
         return somatoria;
     }
 
+    /**
+     * Esse método verifica qual posição está vazia na linha I
+     * @param i - linha que será verificada
+     * @return posição vazia
+     */
     private String posiçãoVaziaLinha(int i){
         String posição = "";
         for (int j = 0; j < 3; j++) {
@@ -292,6 +321,11 @@ public class JogoDaVelha {
         return posição;
     }
 
+    /**
+     * Esse método realiza a somatória dos valores da coluna J
+     * @param j - coluna que será verificada
+     * @return somatoria
+     */
     private int somatoriaColuna(int j){
         int somatoria = 0;
         for (int i = 0; i < 3; i++) {
@@ -300,6 +334,11 @@ public class JogoDaVelha {
         return somatoria;
     }
 
+    /**
+     * Esse método verifica qual posição está vazia na coluna J
+     * @param j - coluna que será verificada
+     * @return posição vazia
+     */
     private String posiçãoVaziaColuna(int j){
         String posição = "";
         for (int i = 0; i < 3; i++) {
@@ -311,6 +350,10 @@ public class JogoDaVelha {
         return posição;
     }
 
+    /**
+     * Esse método realiza a somatória dos valores da diagonal principal
+     * @return somatoria
+     */
     private int somatoriaDiagonalP(){
         int somatoria = 0;
         for (int j = 0, i = 0; j < 3; j++, i++) {
@@ -319,6 +362,10 @@ public class JogoDaVelha {
         return somatoria;
     }
 
+    /**
+     * Esse método verifica qual posição está vazia na diagonal principal
+     * @return posição vazia
+     */
     private String posiçãoVaziaDiagonalP(){
         String posição = "";
         for (int j = 0, i = 0; j < 3; j++, i++) {
@@ -330,6 +377,10 @@ public class JogoDaVelha {
         return posição;
     }
 
+    /**
+     * Esse método realiza a somatória dos valores da diagonal secundária
+     * @return somatoria
+     */
     private int somatoriaDiagonalS(){
         int somatoria = 0;
         for (int i = 0, j = 2; i < 3; i++, j--) {
@@ -338,6 +389,10 @@ public class JogoDaVelha {
         return somatoria;
     }
 
+    /**
+     * Esse método verificar qual posição está vazia na diagonal secundária
+     * @return posição vazia
+     */
     private String posiçãoVaziaDiagonalS(){
         String posição = "";
         for (int i = 0, j = 2; i < 3; i++, j--) {
