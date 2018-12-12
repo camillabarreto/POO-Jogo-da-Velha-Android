@@ -139,6 +139,15 @@ public class TabuleiroActivity extends AppCompatActivity {
         }else return false;
 
         esvaziaTabuleiro();
+
+        //Código comentado: serveria para alternar jogador (inteligencia começando)
+//        if(jogoDaVelha.getJogadorDaPartida() == -1){
+//            String pos = this.jogoDaVelha.inteligencia();
+//            int i = Integer.parseInt(pos.substring(0,1));
+//            int j = Integer.parseInt(pos.substring(1));
+//            matrizButtons[i][j].setText(getSimbolo());
+//        }
+
         return true;
     }
 

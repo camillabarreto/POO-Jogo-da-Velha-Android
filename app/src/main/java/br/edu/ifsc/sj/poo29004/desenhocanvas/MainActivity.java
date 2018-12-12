@@ -13,9 +13,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //poderia colocar uma imagem de inicialização aqui
-        //depois pular para uma outra activity de opções
     }
 
     @Override

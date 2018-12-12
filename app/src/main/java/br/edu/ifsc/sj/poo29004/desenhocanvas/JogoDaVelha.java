@@ -13,7 +13,7 @@ public class JogoDaVelha {
 
     public JogoDaVelha() {
         this.jogadorDaVez = -1;
-        this.jogadorDaPartida = 1;
+        this.jogadorDaPartida = -1;
         this.matrizTabuleiro = new Integer[3][3];
         this.esvaziaTabuleiro();
     }
@@ -65,12 +65,15 @@ public class JogoDaVelha {
      * @return true se jogada válida - false se jogada inválida
      */
     public boolean jogar(String posiçãoMatriz){
+        //Código comentado: serveria para alternar jogador
+//        if(jogadorDaVez == 0){
+//            jogadorDaPartida = jogadorDaPartida*-1;
+//            jogadorDaVez = jogadorDaPartida;
+//        }else {
+//            jogadorDaVez = jogadorDaVez*-1;
+//        }
 
-//        if(jogadorDaVez == 0); //jogadorDaVez = jogadorDaPartida;
-//        else jogadorDaVez = jogadorDaVez*-1;
         jogadorDaVez = jogadorDaVez*-1;
-
-        //System.out.println("JOGADOR DA VEZ: " + jogadorDaVez);
 
         Integer linha = Integer.parseInt(posiçãoMatriz.substring(0, 1)) ;
         Integer coluna = Integer.parseInt(posiçãoMatriz.substring(1));
@@ -111,8 +114,6 @@ public class JogoDaVelha {
                 aux++;
             }
             if(aux == 3){
-                //jogadorDaPartida = jogadorDaPartida*-1;
-                //jogadorDaVez = 0;
                 return true;
             }
             else aux = 0;
@@ -125,8 +126,6 @@ public class JogoDaVelha {
                 aux++;
             }
             if(aux == 3){
-                //jogadorDaPartida = jogadorDaPartida*-1;
-                //jogadorDaVez = 0;
                 return true;
             }
             else aux = 0;
@@ -135,17 +134,11 @@ public class JogoDaVelha {
         if      ((this.matrizTabuleiro[0][0] == jogadorDaVez) &&
                 (this.matrizTabuleiro[1][1] == jogadorDaVez) &&
                 (this.matrizTabuleiro[2][2] == jogadorDaVez)){
-
-                    //jogadorDaPartida = jogadorDaPartida*-1;
-                    //jogadorDaVez = 0;
                     return true;
         }
         if      ((this.matrizTabuleiro[0][2] == jogadorDaVez) &&
                 (this.matrizTabuleiro[1][1] == jogadorDaVez) &&
                 (this.matrizTabuleiro[2][0] == jogadorDaVez)){
-
-                    //jogadorDaPartida = jogadorDaPartida*-1;
-                    //jogadorDaVez = 0;
                     return true;
         }
 
@@ -153,17 +146,9 @@ public class JogoDaVelha {
     }
 
     public void esvaziaTabuleiro(){
-        //Setando para que na próxima jogada
+        //Código comentado: serveria para alternar jogador
+//        jogadorDaVez = 0;
         jogadorDaVez = -1;
-
-//        if(jogadorDaPartida == 1){
-//            jogadorDaPartida = -1;
-//            jogadorDaVez = 1;
-//        }
-//        else{
-//            jogadorDaPartida = 1;
-//            jogadorDaVez = -1;
-//        }
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
